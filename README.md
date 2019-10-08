@@ -1,3 +1,3 @@
-#SnippetBox
+# SnippetBox
 
-For learning GO
+For learning Go
