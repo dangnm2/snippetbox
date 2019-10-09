@@ -7,6 +7,7 @@ import (
 
 	"time"
 
+	"github.com/dangnm2/snippetbox/pkg/forms"
 	"github.com/dangnm2/snippetbox/pkg/models"
 )
 
@@ -45,6 +46,7 @@ func newTemplateCache(dir string) (map[string]*template.Template, error) {
 
 type templateData struct {
 	CurrentYear int
+	Form        *forms.Form
 	Snippet     *models.Snippet
 	Snippets    []*models.Snippet
 }
