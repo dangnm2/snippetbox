@@ -46,6 +46,7 @@ func newTemplateCache(dir string) (map[string]*template.Template, error) {
 
 type templateData struct {
 	CurrentYear int
+	Flash       string
 	Form        *forms.Form
 	Snippet     *models.Snippet
 	Snippets    []*models.Snippet
