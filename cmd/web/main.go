@@ -25,6 +25,7 @@ type application struct {
 	snippets      *mysql.SnippetModel
 	session       *sessions.Session
 	templateCache map[string]*template.Template
+	users         *mysql.UserModel
 }
 
 func main() {
