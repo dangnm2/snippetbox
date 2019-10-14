@@ -92,6 +92,7 @@ func (app *application) signupUser(w http.ResponseWriter, r *http.Request) {
 		app.render(w, r, "signup.page.tmpl", &templateData{
 			Form: form,
 		})
+		return
 	}
 
 	err = app.users.Insert(form.Get("name"), form.Get("email"), form.Get("password"))
@@ -138,4 +139,12 @@ func (app *application) logoutUser(w http.ResponseWriter, r *http.Request) {
 	app.session.Remove(r, "userID")
 	app.session.Put(r, "flash", "You've been logged out!")
 	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
+func ping(w http.ResponseWriter, r *http.Request) {
+	_, err := w.Write([]byte("OK"))
+	if err != nil {
+		return
+	}
+
 }
