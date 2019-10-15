@@ -1,0 +1,16 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/golang:1.12
+    working_directory: /build/github.com/dangnm2/snippetbox
+
+    steps:
+      - checkout
+      - run:
+          name: build
+          command: make build
+
+      - run:
+          name: test
+          command: make test
