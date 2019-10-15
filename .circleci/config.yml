@@ -3,7 +3,7 @@ jobs:
   build:
     docker:
       - image: circleci/golang:1.12
-    working_directory: /build/github.com/dangnm2/snippetbox
+    working_directory: /tmp/github.com/dangnm2/snippetbox
 
     steps:
       - checkout
