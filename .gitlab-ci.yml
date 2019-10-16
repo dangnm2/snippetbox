@@ -1,0 +1,23 @@
+image: golang:1.13-alpine
+
+cache:
+  paths:
+    - .cache
+
+stages:
+  - test
+  - build
+
+before_script:
+  - mkdir -p .cache
+  - export GOPATH="$CI_PROJECT_DIR/.cache"
+
+unit_test:
+  stage: test
+  script:
+    - make test
+
+build:
+  stage: build
+  script:
+    - make build
