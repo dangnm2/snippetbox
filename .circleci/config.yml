@@ -7,6 +7,12 @@ jobs:
 
     steps:
       - checkout
+
+      - restore_cache:
+          keys:
+            - go-modules-v1-{{ checksum "go.sum" }}
+            - go-modules-v1
+
       - run:
           name: build
           command: make build
@@ -14,3 +20,8 @@ jobs:
       - run:
           name: test
           command: make test
+
+      - save_cache:
+          key: go-modules-v1-{{ checksum "go.sum" }}
+          paths:
+            - "/go/pkg/mod"
