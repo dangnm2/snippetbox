@@ -2,7 +2,7 @@ image: golang:1.13
 
 cache:
   paths:
-    - .cache
+    - /tmp/cache
 
 stages:
   - test
