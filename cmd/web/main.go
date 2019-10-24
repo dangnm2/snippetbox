@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"flag"
 	"log"
 	"net/http"
 	"os"
@@ -16,8 +15,11 @@ import (
 
 	"crypto/tls"
 
+	"fmt"
+
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/golangcollege/sessions"
+	"github.com/joho/godotenv"
 )
 
 type application struct {
@@ -42,15 +44,23 @@ type contextKey string
 var contextKeyUser = contextKey("user")
 
 func main() {
-	addr := flag.String("addr", "127.0.0.1:4000", "listen address and port")
-	dsn := flag.String("dsn", "web:Web@123!@tcp(192.168.56.10:3306)/snippetbox?parseTime=true", "MySQL connection string")
-	secret := flag.String("secret", "s6Ndh+pPbnzHbS*+9Pk8qGWhTzbpa@ge", "Secret key")
-	flag.Parse()
+	//addr := flag.String("addr", "127.0.0.1:4000", "listen address and port")
+	//dsn := flag.String("dsn", "web:Web@123!@tcp(192.168.56.10:3306)/snippetbox?parseTime=true", "MySQL connection string")
+	//secret := flag.String("secret", "s6Ndh+pPbnzHbS*+9Pk8qGWhTzbpa@ge", "Secret key")
+	//flag.Parse()
 
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 
-	db, err := openDB(*dsn)
+	if err := godotenv.Load(); err != nil {
+		infoLog.Println("No .env found")
+	}
+
+	config := newConfig()
+
+	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?parseTime=true", config.DB.User, config.DB.Password, config.DB.Address, config.DB.Name)
+
+	db, err := openDB(dsn)
 	if err != nil {
 		errorLog.Fatal(err)
 	}
@@ -62,7 +72,7 @@ func main() {
 		errorLog.Fatal(err)
 	}
 
-	session := sessions.New([]byte(*secret))
+	session := sessions.New([]byte(config.Secret))
 	session.Lifetime = 12 * time.Hour
 	session.Secure = true
 
@@ -81,7 +91,7 @@ func main() {
 	}
 
 	srv := &http.Server{
-		Addr:         *addr,
+		Addr:         config.Address,
 		ErrorLog:     errorLog,
 		TLSConfig:    tlsConfig,
 		IdleTimeout:  time.Minute,
@@ -89,7 +99,7 @@ func main() {
 		WriteTimeout: 10 * time.Second,
 		Handler:      app.routes(),
 	}
-	infoLog.Printf("Starting server on %s", *addr)
+	infoLog.Printf("Starting server on %s", config.Address)
 	err = srv.ListenAndServeTLS("./tls/cert.pem", "./tls/key.pem")
 	errorLog.Fatal(err)
 }
