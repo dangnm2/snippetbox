@@ -10,7 +10,7 @@ build: setup
 	go build -o bin/$(PROJECT) $(BUILD_TARGET)
 
 test:
-	go test -v -short ./...
+	CGO_ENABLED=0 go test -v -short ./...
 
 clean:
 	@rm -rf bin
