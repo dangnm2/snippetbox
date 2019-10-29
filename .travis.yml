@@ -11,7 +11,7 @@ env:
 
 before_script:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS snippetbox;'
-  - mysql --version
+  - mysql -e 'SHOW DATABASES;'
 
 jobs:
   include:
