@@ -12,13 +12,11 @@ env:
 before_script:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS snippetbox;'
   - mysql -e 'SHOW DATABASES;'
-  - mysql -u root snippetbox < ./pkg/models/mysql/testdata/setup.sql
 
 jobs:
   include:
     - stage: 'tests'
       name: 'unit tests'
       script: make test
-    - name: 'check version'
     - name: 'integration tests'
       script: make integrate
