@@ -12,6 +12,9 @@ build: setup
 test:
 	CGO_ENABLED=0 go test -v -short ./...
 
+integrate: test
+	CGO_ENABLED=0 go test -v ./...
+
 clean:
 	@rm -rf bin
 

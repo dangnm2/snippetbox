@@ -1,3 +1,20 @@
 language: go
 
 go: 1.13.x
+
+services:
+  - mysql
+
+env:
+  - SNIPPETBOX_DB_USER=root SNIPPETBOX_DB_PASSWORD= SNIPPETBOX_DB_ADDRESS=127.0.0.1
+
+before_script:
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS snippetbox;'
+
+jobs:
+  include:
+    - stage: 'tests'
+      name: 'unit tests'
+      script: make test
+    - name: 'integration tests'
+      script: make integrate
