@@ -11,11 +11,13 @@ env:
 
 before_script:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS snippetbox;'
+  - mysql --version
 
 jobs:
   include:
     - stage: 'tests'
       name: 'unit tests'
       script: make test
+    - name: 'check version'
     - name: 'integration tests'
       script: make integrate
