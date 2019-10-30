@@ -33,7 +33,7 @@ func getDBConfig() config {
 
 func newTestDB(t *testing.T) (*sql.DB, func()) {
 	config := getDBConfig()
-	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?parseTime=true", config.user, config.password, config.address, config.name)
+	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?parseTime=true&multiStatements=true", config.user, config.password, config.address, config.name)
 
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
