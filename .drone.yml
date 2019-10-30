@@ -1,0 +1,7 @@
+pipeline:
+  build:
+    image: golang:1.13
+    commands:
+      - go mod download
+      - go test -v -short ./...
+      - go build ./cmd/web
